@@ -22,7 +22,7 @@ class Player:
         self.x, self.y = 200, 200
         self.frame = 0
         self.dir = 0
-        self.acceleration = 6
+        self.acceleration = 10
 
     def update(self):
         global state
