@@ -1,12 +1,14 @@
+import game_framework
 from pico2d import *
 import random
-import game_framework
+
 
 # state : 캐릭터의 움직임을 저장하는 전역 변수
 # 0 : 아무것도 안 함, 1 : 오른쪽 움직임, -1 : 왼쪽 움직임, 2 : 문 열기
 state = 0
 Map_Size = [800, 450]
 jump = False
+name = "Stage1State"
 
 
 class Map:
@@ -92,9 +94,9 @@ def handle_events():
 
     for event in events:
         if event.type == SDL_QUIT:
-            running = False
+            game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            running = False
+            game_framework.quit()
         # 키 누를시 캐릭터 이동
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_LEFT:
