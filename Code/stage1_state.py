@@ -1,5 +1,6 @@
 from pico2d import *
 import random
+import game_framework
 
 # state : 캐릭터의 움직임을 저장하는 전역 변수
 # 0 : 아무것도 안 함, 1 : 오른쪽 움직임, -1 : 왼쪽 움직임, 2 : 문 열기
@@ -61,6 +62,26 @@ class Player:
     def draw(self):
         self.image.clip_draw(self.frame * 32, self.dir * 32, 32, 32, self.x, self.y)
 
+def enter():
+    global map, player
+    map = Map()
+    player = Player()
+    pass
+
+
+def exit():
+    global map, player
+    del(map)
+    del(player)
+    pass
+
+
+def pause():
+    pass
+
+
+def resume():
+    pass
 
 def handle_events():
     global running
@@ -89,23 +110,15 @@ def handle_events():
             elif event.key == SDLK_RIGHT and state == 1:
                 state = 0
 
-
-open_canvas()
-
-map = Map()
-player = Player()
-
-running = True
-
-while running:
-    handle_events()
+def update():
     player.update()
+    pass
 
+
+def draw():
     clear_canvas()
     map.draw()
     player.draw()
     update_canvas()
-
     delay(0.05)
-
-close_canvas()
+    pass
