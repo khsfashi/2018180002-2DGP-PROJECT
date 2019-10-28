@@ -26,10 +26,10 @@ tile_Setting = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                ['■', 0, 0, 0, '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                ['■', 0, 0, 0, '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                ['■', 0, 0, 0, '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                ['■', '■', '■', '■', '■', '■', '■', '■', '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                ['□', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                ['□', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                ['□', 0, 0, 0, '□', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                ['□', '■', '■', '■', '■', '■', '■', '■', '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                 ]
 def max(a, b):
     if a > b:
@@ -61,7 +61,6 @@ def IntersectRect(interRect, rect1_left, rect1_top, rect1_right, rect1_bottom, r
     if vertical and horizontal:
         return True
     else:
-        jump = True
         return False
 
 
@@ -76,15 +75,65 @@ class Map:
 
 class Tile:
     image = None
+
     def __init__(self):
         self.x = 0
         self.y = 0
         self.interRect = [0, 0, 0, 0]
+        self.isDraw = False
+        self.InterH = 0
         if Tile.image == None:
             Tile.image = load_image('Resource\\TileSet\\Lab_Tile.png')
 
     def draw(self):
-        self.image.clip_draw(0, 0, Tile_Size[0], Tile_Size[1], self.x, self.y, 32, 32)
+        if self.isDraw:
+            self.image.clip_draw(0, 0, Tile_Size[0], Tile_Size[1], self.x, self.y, 32, 32)
+
+    def intersect(self):
+        global jump
+        if IntersectRect(self.interRect, self.x - 16, self.y + 16, self.x + 16, self.y - 16,
+                         player.x - 10, player.y + 16, player.x + 10, player.y - 16):
+            jump = False
+            self.InterH = self.interRect[3] - self.interRect[1]
+
+            if self.y < player.y:
+                player.y -= self.InterH
+            elif self.y > player.y:
+                player.y += self.InterH
+
+
+class Wall:
+    image = None
+
+    def __init__(self):
+        self.x = 0
+        self.y = 0
+        self.interRect = [0, 0, 0, 0]
+        self.isDraw = False
+        self.InterW = 0
+        self.InterH = 0
+        if Wall.image == None:
+            Wall.image = load_image('Resource\\TileSet\\Lab_Tile.png')
+
+    def draw(self):
+        if self.isDraw:
+            self.image.clip_draw(0, 0, Tile_Size[0], Tile_Size[1], self.x, self.y, 32, 32)
+
+    def intersect(self):
+        global jump
+        if IntersectRect(self.interRect, self.x - 16, self.y + 16, self.x + 16, self.y - 16,
+                         player.x - 10, player.y + 16, player.x + 10, player.y - 16):
+            self.InterW = self.interRect[2] - self.interRect[0]
+            self.InterH = self.interRect[3] - self.interRect[1]
+            if self.InterW < self.InterH:
+                if self.y < player.y:
+                    player.y -= self.InterH
+            else:
+                if self.x < player.x:
+                    player.x += self.InterW
+                elif self.x > player.x:
+                    player.x -= self.InterW
+
 
 
 class Player:
@@ -94,7 +143,6 @@ class Player:
         self.frame = 0
         self.dir = 0
         self.acceleration = 0
-        self.interRect = [0, 0, 0, 0]
 
     def update(self):
         global state
@@ -130,11 +178,21 @@ class Player:
 
 
 def enter():
-    global map, player, background
+    global map, player, background, wall
     background = Map()
     player = Player()
     map = [[Tile() for j in range(0, 25)] for i in range(0, 19)]
-    pass
+    wall = [[Wall() for j in range(0, 25)] for i in range(0, 19)]
+    for i in range(0, 19):
+        for j in range(0, 25):
+            map[i][j].x = j * 32 + 16
+            map[i][j].y = (18 - i) * 32 + 16
+            wall[i][j].x = j * 32 + 16
+            wall[i][j].y = (18 - i) * 32 + 16
+            if tile_Setting[i][j] == '■':
+                map[i][j].isDraw = True
+            if tile_Setting[i][j] == '□':
+                wall[i][j].isDraw = True
 
 
 def exit():
@@ -142,7 +200,6 @@ def exit():
     del(background)
     del(player)
     del(map)
-    pass
 
 
 def pause():
@@ -173,6 +230,7 @@ def handle_events():
                 state = 1
             elif event.key == SDLK_SPACE:
                 jump = True
+                player.acceleration = 10
         # 키 뗄시 캐릭터 멈춤
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_LEFT and state == -1:
@@ -183,8 +241,13 @@ def handle_events():
 
 def update():
     player.update()
-    pass
-
+    # 충돌체크
+    for i in range(0, 19):
+        for j in range(0, 25):
+            if map[i][j].isDraw == True:
+                map[i][j].intersect()
+            if wall[i][j].isDraw == True:
+                wall[i][j].intersect()
 
 def draw():
     clear_canvas()
@@ -192,7 +255,7 @@ def draw():
     for i in range(0, 19):
         for j in range(0, 25):
             map[i][j].draw()
+            wall[i][j].draw()
     player.draw()
     update_canvas()
     delay(0.05)
-    pass
