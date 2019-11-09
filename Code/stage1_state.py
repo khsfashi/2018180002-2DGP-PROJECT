@@ -2,21 +2,24 @@ import game_framework
 from pico2d import *
 import random
 
-
-# state : 캐릭터의 움직임을 저장하는 전역 변수
-# 0 : 아무것도 안 함, 1 : 오른쪽 움직임, -1 : 왼쪽 움직임, 2 : 문 열기
+# 상수 모음
 MAX_TILE_WIDTH = 25
 MAX_TILE_HEIGHT = 19
-state = 0
 MAP_WIDTH = 800
 MAP_HEIGHT = 450
 TILE_WIDTH = 32
 TILE_HEIGHT = 32
 CHARACTER_WIDTH = 32
 CHARACTER_HEIGHT = 32
-jump = True
-cnt = 0
 name = "Stage1State"
+
+# state : 캐릭터의 움직임을 저장하는 전역 변수
+# 0 : 아무것도 안 함, 1 : 오른쪽 움직임, -1 : 왼쪽 움직임, 2 : 문 열기
+state = 0
+
+jumping = True
+cnt = 0
+
 tile_Setting = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -38,21 +41,21 @@ tile_Setting = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
                 ['■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                 ]
 
-def IntersectRect(interRect, rect1_left, rect1_top, rect1_right, rect1_bottom,
-                  rect2_left, rect2_top, rect2_right, rect2_bottom):
+def intersected_rectangle(collided_Rect, rect1_left, rect1_top, rect1_right, rect1_bottom,
+                          rect2_left, rect2_top, rect2_right, rect2_bottom):
     vertical = False
     horizontal = False
-    global jump
+    global jumping
 
     if rect1_left <= rect2_right and rect1_right >= rect2_left:
         horizontal = True
-        interRect[0] = max(rect1_left, rect2_left)
-        interRect[2] = min(rect1_right, rect2_right)
+        collided_Rect[0] = max(rect1_left, rect2_left)
+        collided_Rect[2] = min(rect1_right, rect2_right)
 
     if rect1_top >= rect2_bottom and rect1_bottom <= rect2_top:
         vertical = True
-        interRect[1] = min(rect1_top, rect2_top)
-        interRect[3] = max(rect1_bottom, rect2_bottom)
+        collided_Rect[1] = min(rect1_top, rect2_top)
+        collided_Rect[3] = max(rect1_bottom, rect2_bottom)
 
     if vertical and horizontal:
         return True
@@ -74,10 +77,10 @@ class Tile:
     def __init__(self):
         self.x = 0
         self.y = 0
-        self.interRect = [0, 0, 0, 0]
+        self.collided_Rect = [0, 0, 0, 0]
         self.isDraw = False
-        self.InterH = 0
-        self.InterW = 0
+        self.collided_Rect_Height = 0
+        self.collided_Rect_Width = 0
         if Tile.image == None:
             Tile.image = load_image('Resource\\TileSet\\Lab_Tile.png')
 
@@ -86,22 +89,23 @@ class Tile:
             self.image.clip_draw(0, 0, TILE_WIDTH, TILE_HEIGHT, self.x, self.y, 32, 32)
 
     def intersect(self):
-        global jump
-        if IntersectRect(self.interRect, self.x - 16, self.y + 16, self.x + 16, self.y - 16,
+        global jumping
+        if intersected_rectangle(self.collided_Rect, self.x - 16, self.y + 16, self.x + 16, self.y - 16,
                          player.x - 10, player.y + 16, player.x + 10, player.y - 16):
-            self.InterH = self.interRect[1] - self.interRect[3]
-            self.InterW = self.interRect[2] - self.interRect[0]
-            if self.InterW > self.InterH:
-                if self.interRect[1] == self.y + 16:
-                    player.y += self.InterH
-                    jump = False
-                elif self.interRect[3] == self.y - 16:
-                    player.y -= self.InterH
+            self.collided_Rect_Height = self.collided_Rect[1] - self.collided_Rect[3]
+            self.collided_Rect_Width = self.collided_Rect[2] - self.collided_Rect[0]
+
+            if self.collided_Rect_Width > self.collided_Rect_Height:
+                if self.collided_Rect[1] == self.y + 16:
+                    player.y += self.collided_Rect_Height
+                    jumping = False
+                elif self.collided_Rect[3] == self.y - 16:
+                    player.y -= self.collided_Rect_Height
             else:
-                if self.interRect[0] == self.x - 16:
-                    player.x -= self.InterW
-                elif self.interRect[2] == self.x + 16:
-                    player.x += self.InterW
+                if self.collided_Rect[0] == self.x - 16:
+                    player.x -= self.collided_Rect_Width
+                elif self.collided_Rect[2] == self.x + 16:
+                    player.x += self.collided_Rect_Width
 
 
 class Player:
@@ -114,7 +118,7 @@ class Player:
 
     def update(self):
         global state
-        global jump
+        global jumping
         # 방향 정하기
         if state == 0:
             self.frame = 0
@@ -122,7 +126,7 @@ class Player:
             self.dir = 0
         elif state == -1:
             self.dir = 1
-        if jump == True:
+        if jumping == True:
             self.frame = 1
 
         # 애니메이션
@@ -137,7 +141,7 @@ class Player:
                 self.x -= 4
 
         # 점프
-        if jump == True:
+        if jumping == True:
             self.y += self.acceleration
             self.acceleration -= 1
 
@@ -176,7 +180,7 @@ def resume():
 def handle_events():
     global running
     global state
-    global jump
+    global jumping
 
     events = get_events()
 
@@ -192,7 +196,7 @@ def handle_events():
             elif event.key == SDLK_RIGHT:
                 state = 1
             elif event.key == SDLK_SPACE:
-                jump = True
+                jumping = True
                 player.acceleration = 10
         # 키 뗄시 캐릭터 멈춤
         elif event.type == SDL_KEYUP:
@@ -203,7 +207,7 @@ def handle_events():
 
 
 def update():
-    global jump
+    global jumping
     global cnt
     player.update()
     # 충돌체크
@@ -211,13 +215,13 @@ def update():
         for j in range(MAX_TILE_WIDTH):
             if map[i][j].isDraw == True:
                 map[i][j].intersect()
-                if IntersectRect(map[i][j].interRect, map[i][j].x - 16, map[i][j].y + 16, map[i][j].x + 16,
+                if intersected_rectangle(map[i][j].collided_Rect, map[i][j].x - 16, map[i][j].y + 16, map[i][j].x + 16,
                                  map[i][j].y - 16, player.x - 10, player.y + 16, player.x + 10, player.y - 16):
                     cnt = 1
     if cnt == 0:
-        if jump == False:
+        if jumping == False:
             player.acceleration = 0
-        jump = True
+        jumping = True
     else:
         cnt = 0
 
