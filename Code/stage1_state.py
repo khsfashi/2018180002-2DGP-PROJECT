@@ -1,12 +1,11 @@
 import game_framework
 from pico2d import *
+from background import Background
 import random
 
 # 상수 모음
 MAX_TILE_WIDTH = 25
 MAX_TILE_HEIGHT = 19
-MAP_WIDTH = 800
-MAP_HEIGHT = 450
 TILE_WIDTH = 32
 TILE_HEIGHT = 32
 CHARACTER_WIDTH = 32
@@ -61,15 +60,6 @@ def intersected_rectangle(collided_Rect, rect1_left, rect1_top, rect1_right, rec
         return True
     else:
         return False
-
-
-class Map:
-    def __init__(self):
-        self.image = load_image('Resource\\BackGround\\Information_Room.png')
-
-    def draw(self):
-        self.image.clip_draw(0, 0, MAP_WIDTH, MAP_HEIGHT, 400, 300, 800, 600)
-
 
 class Tile:
     image = None
@@ -151,7 +141,7 @@ class Terra:
 
 def enter():
     global map, terra, background
-    background = Map()
+    background = Background()
     terra = Terra()
     map = [[Tile() for j in range(MAX_TILE_WIDTH)] for i in range(MAX_TILE_HEIGHT)]
     for i in range(MAX_TILE_HEIGHT):
@@ -164,10 +154,9 @@ def enter():
 
 def exit():
     global map, terra, background
-    del(background)
     del(terra)
     del(map)
-
+    del(background)
 
 def pause():
     pass
