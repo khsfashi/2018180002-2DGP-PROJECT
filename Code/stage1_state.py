@@ -32,17 +32,6 @@ tile_Setting = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
                 [0, '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 ['■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                 ]
-def max(a, b):
-    if a > b:
-        return a
-    else:
-        return b
-
-def min(a, b):
-    if a < b:
-        return a
-    else:
-        return b
 
 def IntersectRect(interRect, rect1_left, rect1_top, rect1_right, rect1_bottom, rect2_left, rect2_top, rect2_right, rect2_bottom):
     vertical = False
