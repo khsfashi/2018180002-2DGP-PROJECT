@@ -5,10 +5,15 @@ import random
 
 # state : 캐릭터의 움직임을 저장하는 전역 변수
 # 0 : 아무것도 안 함, 1 : 오른쪽 움직임, -1 : 왼쪽 움직임, 2 : 문 열기
+MAX_TILE_WIDTH = 25
+MAX_TILE_HEIGHT = 19
 state = 0
-Map_Size = [800, 450]
-Tile_Size = [32, 32]
-Character_Size = [32, 32]
+MAP_WIDTH = 800
+MAP_HEIGHT = 450
+TILE_WIDTH = 32
+TILE_HEIGHT = 32
+CHARACTER_WIDTH = 32
+CHARACTER_HEIGHT = 32
 jump = True
 cnt = 0
 name = "Stage1State"
@@ -33,7 +38,8 @@ tile_Setting = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
                 ['■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                 ]
 
-def IntersectRect(interRect, rect1_left, rect1_top, rect1_right, rect1_bottom, rect2_left, rect2_top, rect2_right, rect2_bottom):
+def IntersectRect(interRect, rect1_left, rect1_top, rect1_right, rect1_bottom,
+                  rect2_left, rect2_top, rect2_right, rect2_bottom):
     vertical = False
     horizontal = False
     global jump
@@ -59,7 +65,7 @@ class Map:
         self.image = load_image('Resource\\BackGround\\Information_Room.png')
 
     def draw(self):
-        self.image.clip_draw(0, 0, Map_Size[0], Map_Size[1], 400, 300, 800, 600)
+        self.image.clip_draw(0, 0, MAP_WIDTH, MAP_HEIGHT, 400, 300, 800, 600)
 
 
 class Tile:
@@ -77,7 +83,7 @@ class Tile:
 
     def draw(self):
         if self.isDraw:
-            self.image.clip_draw(0, 0, Tile_Size[0], Tile_Size[1], self.x, self.y, 32, 32)
+            self.image.clip_draw(0, 0, TILE_WIDTH, TILE_HEIGHT, self.x, self.y, 32, 32)
 
     def intersect(self):
         global jump
@@ -136,18 +142,18 @@ class Player:
             self.acceleration -= 1
 
     def draw(self):
-        self.image.clip_draw(self.frame * 32, self.dir * 32, 32, 32, self.x, self.y)
+        self.image.clip_draw(self.frame * 32, self.dir * 32, CHARACTER_WIDTH, CHARACTER_HEIGHT, self.x, self.y)
 
 
 def enter():
     global map, player, background
     background = Map()
     player = Player()
-    map = [[Tile() for j in range(0, 25)] for i in range(0, 19)]
-    for i in range(0, 19):
-        for j in range(0, 25):
-            map[i][j].x = j * 32 + 16
-            map[i][j].y = (18 - i) * 32 + 16
+    map = [[Tile() for j in range(MAX_TILE_WIDTH)] for i in range(MAX_TILE_HEIGHT)]
+    for i in range(MAX_TILE_HEIGHT):
+        for j in range(MAX_TILE_WIDTH):
+            map[i][j].x = j * TILE_WIDTH + (TILE_WIDTH / 2)
+            map[i][j].y = (18 - i) * TILE_HEIGHT + (TILE_HEIGHT / 2)
             if tile_Setting[i][j] == '■':
                 map[i][j].isDraw = True
 
@@ -201,8 +207,8 @@ def update():
     global cnt
     player.update()
     # 충돌체크
-    for i in range(0, 19):
-        for j in range(0, 25):
+    for i in range(MAX_TILE_HEIGHT):
+        for j in range(MAX_TILE_WIDTH):
             if map[i][j].isDraw == True:
                 map[i][j].intersect()
                 if IntersectRect(map[i][j].interRect, map[i][j].x - 16, map[i][j].y + 16, map[i][j].x + 16,
@@ -218,8 +224,8 @@ def update():
 def draw():
     clear_canvas()
     background.draw()
-    for i in range(0, 19):
-        for j in range(0, 25):
+    for i in range(MAX_TILE_HEIGHT):
+        for j in range(MAX_TILE_WIDTH):
             map[i][j].draw()
     player.draw()
     update_canvas()
