@@ -88,27 +88,27 @@ class Tile:
         if self.isDraw:
             self.image.clip_draw(0, 0, TILE_WIDTH, TILE_HEIGHT, self.x, self.y, 32, 32)
 
-    def intersect(self):
+    def update(self, terra):
         global jumping
         if intersected_rectangle(self.collided_Rect, self.x - 16, self.y + 16, self.x + 16, self.y - 16,
-                         player.x - 10, player.y + 16, player.x + 10, player.y - 16):
+                                 terra.x - 10, terra.y + 16, terra.x + 10, terra.y - 16):
             self.collided_Rect_Height = self.collided_Rect[1] - self.collided_Rect[3]
             self.collided_Rect_Width = self.collided_Rect[2] - self.collided_Rect[0]
 
             if self.collided_Rect_Width > self.collided_Rect_Height:
                 if self.collided_Rect[1] == self.y + 16:
-                    player.y += self.collided_Rect_Height
+                    terra.y += self.collided_Rect_Height
                     jumping = False
                 elif self.collided_Rect[3] == self.y - 16:
-                    player.y -= self.collided_Rect_Height
+                    terra.y -= self.collided_Rect_Height
             else:
                 if self.collided_Rect[0] == self.x - 16:
-                    player.x -= self.collided_Rect_Width
+                    terra.x -= self.collided_Rect_Width
                 elif self.collided_Rect[2] == self.x + 16:
-                    player.x += self.collided_Rect_Width
+                    terra.x += self.collided_Rect_Width
 
 
-class Player:
+class Terra:
     def __init__(self):
         self.image = load_image('Resource\\Character\\Untitled1.png')
         self.x, self.y = 200, 200
@@ -150,9 +150,9 @@ class Player:
 
 
 def enter():
-    global map, player, background
+    global map, terra, background
     background = Map()
-    player = Player()
+    terra = Terra()
     map = [[Tile() for j in range(MAX_TILE_WIDTH)] for i in range(MAX_TILE_HEIGHT)]
     for i in range(MAX_TILE_HEIGHT):
         for j in range(MAX_TILE_WIDTH):
@@ -163,9 +163,9 @@ def enter():
 
 
 def exit():
-    global map, player, background
+    global map, terra, background
     del(background)
-    del(player)
+    del(terra)
     del(map)
 
 
@@ -197,7 +197,7 @@ def handle_events():
                 state = 1
             elif event.key == SDLK_SPACE:
                 jumping = True
-                player.acceleration = 10
+                terra.acceleration = 10
         # 키 뗄시 캐릭터 멈춤
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_LEFT and state == -1:
@@ -209,18 +209,18 @@ def handle_events():
 def update():
     global jumping
     global cnt
-    player.update()
+    terra.update()
     # 충돌체크
     for i in range(MAX_TILE_HEIGHT):
         for j in range(MAX_TILE_WIDTH):
             if map[i][j].isDraw == True:
-                map[i][j].intersect()
+                map[i][j].update(terra)
                 if intersected_rectangle(map[i][j].collided_Rect, map[i][j].x - 16, map[i][j].y + 16, map[i][j].x + 16,
-                                 map[i][j].y - 16, player.x - 10, player.y + 16, player.x + 10, player.y - 16):
+                                 map[i][j].y - 16, terra.x - 10, terra.y + 16, terra.x + 10, terra.y - 16):
                     cnt = 1
     if cnt == 0:
         if jumping == False:
-            player.acceleration = 0
+            terra.acceleration = 0
         jumping = True
     else:
         cnt = 0
@@ -231,6 +231,6 @@ def draw():
     for i in range(MAX_TILE_HEIGHT):
         for j in range(MAX_TILE_WIDTH):
             map[i][j].draw()
-    player.draw()
+    terra.draw()
     update_canvas()
     delay(0.05)
