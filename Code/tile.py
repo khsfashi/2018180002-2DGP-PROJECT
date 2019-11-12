@@ -50,6 +50,7 @@ class Tile:
             if self.collided_Rect_Width > self.collided_Rect_Height:
                 if self.collided_Rect[1] == self.y + 16:
                     terra.y += self.collided_Rect_Height
+                    terra.jumping = False
                 elif self.collided_Rect[3] == self.y - 16:
                     terra.y -= self.collided_Rect_Height
             else:

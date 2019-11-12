@@ -16,8 +16,6 @@ name = "Stage1State"
 # state : 캐릭터의 움직임을 저장하는 전역 변수
 # 0 : 아무것도 안 함, 1 : 오른쪽 움직임, -1 : 왼쪽 움직임, 2 : 문 열기
 state = 0
-
-jumping = True
 cnt = 0
 
 tile_Setting = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -49,10 +47,10 @@ class Terra:
         self.frame = 0
         self.dir = 0
         self.acceleration = 0
+        self.jumping = False
 
     def update(self):
         global state
-        global jumping
         # 방향 정하기
         if state == 0:
             self.frame = 0
@@ -60,7 +58,7 @@ class Terra:
             self.dir = 0
         elif state == -1:
             self.dir = 1
-        if jumping == True:
+        if self.jumping == True:
             self.frame = 1
 
         # 애니메이션
@@ -75,7 +73,7 @@ class Terra:
                 self.x -= 4
 
         # 점프
-        if jumping == True:
+        if self.jumping == True:
             self.y += self.acceleration
             self.acceleration -= 1
 
@@ -113,7 +111,6 @@ def resume():
 def handle_events():
     global running
     global state
-    global jumping
 
     events = get_events()
 
@@ -129,7 +126,7 @@ def handle_events():
             elif event.key == SDLK_RIGHT:
                 state = 1
             elif event.key == SDLK_SPACE:
-                jumping = True
+                terra.jumping = True
                 terra.acceleration = 10
         # 키 뗄시 캐릭터 멈춤
         elif event.type == SDL_KEYUP:
@@ -140,7 +137,6 @@ def handle_events():
 
 
 def update():
-    global jumping
     global cnt
     terra.update()
     # 충돌체크
@@ -152,9 +148,9 @@ def update():
                                  map[i][j].y - 16, terra.x - 10, terra.y + 16, terra.x + 10, terra.y - 16):
                     cnt = 1
     if cnt == 0:
-        if jumping == False:
+        if terra.jumping == False:
             terra.acceleration = 0
-        jumping = True
+        terra.jumping = True
     else:
         cnt = 0
 
