@@ -4,7 +4,6 @@ def intersected_rectangle(collided_Rect, rect1_left, rect1_top, rect1_right, rec
                           rect2_left, rect2_top, rect2_right, rect2_bottom):
     vertical = False
     horizontal = False
-    global jumping
 
     if rect1_left <= rect2_right and rect1_right >= rect2_left:
         horizontal = True
@@ -43,7 +42,7 @@ class Tile:
 
     def update(self, terra):
         if intersected_rectangle(self.collided_Rect, self.x - 16, self.y + 16, self.x + 16, self.y - 16,
-                                 terra.x - 10, terra.y + 16, terra.x + 10, terra.y - 16):
+                                 terra.x - 10, terra.y + 14, terra.x + 10, terra.y - 16):
             self.collided_Rect_Height = self.collided_Rect[1] - self.collided_Rect[3]
             self.collided_Rect_Width = self.collided_Rect[2] - self.collided_Rect[0]
 
@@ -53,6 +52,8 @@ class Tile:
                     terra.jumping = False
                 elif self.collided_Rect[3] == self.y - 16:
                     terra.y -= self.collided_Rect_Height
+                    terra.y -= 1
+                    terra.acceleration = 0
             else:
                 if self.collided_Rect[0] == self.x - 16:
                     terra.x -= self.collided_Rect_Width

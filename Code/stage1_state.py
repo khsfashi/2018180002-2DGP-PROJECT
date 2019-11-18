@@ -1,21 +1,17 @@
 import game_framework
 from pico2d import *
 from background import Background
+from terra import Terra
 import tile
 import random
 
 # 상수 모음
 MAX_TILE_WIDTH = 25
 MAX_TILE_HEIGHT = 19
-CHARACTER_WIDTH = 32
-CHARACTER_HEIGHT = 32
 TILE_WIDTH = 32
 TILE_HEIGHT = 32
 name = "Stage1State"
 
-# state : 캐릭터의 움직임을 저장하는 전역 변수
-# 0 : 아무것도 안 함, 1 : 오른쪽 움직임, -1 : 왼쪽 움직임, 2 : 문 열기
-state = 0
 cnt = 0
 
 tile_Setting = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -39,46 +35,6 @@ tile_Setting = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
                 ['■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                 ]
 
-
-class Terra:
-    def __init__(self):
-        self.image = load_image('Resource\\Character\\Untitled1.png')
-        self.x, self.y = 200, 200
-        self.frame = 0
-        self.dir = 0
-        self.acceleration = 0
-        self.jumping = False
-
-    def update(self):
-        global state
-        # 방향 정하기
-        if state == 0:
-            self.frame = 0
-        elif state == 1:
-            self.dir = 0
-        elif state == -1:
-            self.dir = 1
-        if self.jumping == True:
-            self.frame = 1
-
-        # 애니메이션
-        if state == 1 or state == -1:
-            self.frame = (self.frame + 1) % 3
-
-        # 움직임
-        if state == 1 or state == -1:
-            if self.dir == 0:
-                self.x += 4
-            elif self.dir == 1:
-                self.x -= 4
-
-        # 점프
-        if self.jumping == True:
-            self.y += self.acceleration
-            self.acceleration -= 1
-
-    def draw(self):
-        self.image.clip_draw(self.frame * 32, self.dir * 32, CHARACTER_WIDTH, CHARACTER_HEIGHT, self.x, self.y)
 
 
 def enter():
@@ -110,7 +66,6 @@ def resume():
 
 def handle_events():
     global running
-    global state
 
     events = get_events()
 
@@ -122,18 +77,18 @@ def handle_events():
         # 키 누를시 캐릭터 이동
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_LEFT:
-                state = -1
+                terra.dir = -1
             elif event.key == SDLK_RIGHT:
-                state = 1
+                terra.dir = 1
             elif event.key == SDLK_SPACE:
                 terra.jumping = True
                 terra.acceleration = 10
         # 키 뗄시 캐릭터 멈춤
         elif event.type == SDL_KEYUP:
-            if event.key == SDLK_LEFT and state == -1:
-                state = 0
-            elif event.key == SDLK_RIGHT and state == 1:
-                state = 0
+            if event.key == SDLK_LEFT and terra.dir == -1:
+                terra.dir = 0
+            elif event.key == SDLK_RIGHT and terra.dir == 1:
+                terra.dir = 0
 
 
 def update():
