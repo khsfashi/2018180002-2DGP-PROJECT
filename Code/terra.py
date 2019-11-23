@@ -14,7 +14,7 @@ TIME_PER_ACTION = 0.25
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 3
 
-# Terra Event
+# Terra  Event
 RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, SPACE = range(5)
 
 key_event_table = {
