@@ -117,6 +117,7 @@ class Terra:
         self.velocity = 0
         self.acceleration = 0
         self.jumping = True
+        self.color = 0
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
