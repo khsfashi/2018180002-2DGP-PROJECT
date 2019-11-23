@@ -74,21 +74,8 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
-        # 키 누를시 캐릭터 이동
-        elif event.type == SDL_KEYDOWN:
-            if event.key == SDLK_LEFT:
-                terra.dir = -1
-            elif event.key == SDLK_RIGHT:
-                terra.dir = 1
-            elif event.key == SDLK_SPACE:
-                terra.jumping = True
-                terra.acceleration = 10
-        # 키 뗄시 캐릭터 멈춤
-        elif event.type == SDL_KEYUP:
-            if event.key == SDLK_LEFT and terra.dir == -1:
-                terra.dir = 0
-            elif event.key == SDLK_RIGHT and terra.dir == 1:
-                terra.dir = 0
+        else:
+            terra.handle_event(event)
 
 
 def update():
@@ -117,4 +104,3 @@ def draw():
             map[i][j].draw()
     terra.draw()
     update_canvas()
-    delay(0.05)
