@@ -3,6 +3,7 @@ from pico2d import *
 from background import Background
 from terra import Terra
 from color_potion import Potion
+from gate import Gate
 import tile
 import random
 
@@ -29,11 +30,11 @@ tile_Setting = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'W', 0, 0, 0, 0, 0, 0, 0, '■', '■', '■', 0, 0, 0, 0],
-                [0, '■', 0, 0, 0, 'N', 0, 0, 0, 0, 0, '■', '■', '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Wp', 0, 0, 0, 0, 0, 0, 0, '■', '■', '■', 0, 0, 0, 0],
+                [0, '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, '■', '■', '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, '■', 0, 0, 0, '■', '■', '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, '■', 'R', 0, 0, 0, 0, 'G', 0, 0, 0, 0, 'B', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                ['■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                [0, '■', 'Rp', 0, 0, 'Rg', 0, 'Gp', 0, 0, 0, 0, 'Bp', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                ['■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■']
                 ]
 
 
@@ -49,42 +50,64 @@ def collide(a, b):
 
 
 def enter():
-    global map, terra, background, potion
+    global map, terra, background, potion, gate
     background = Background()
     terra = Terra()
     map = [[tile.Tile() for j in range(MAX_TILE_WIDTH)] for i in range(MAX_TILE_HEIGHT)]
     potion = [[Potion() for j in range(MAX_TILE_WIDTH)] for i in range(MAX_TILE_HEIGHT)]
+    gate = [[Gate() for j in range(MAX_TILE_WIDTH)] for i in range(MAX_TILE_HEIGHT)]
     for i in range(MAX_TILE_HEIGHT):
         for j in range(MAX_TILE_WIDTH):
             map[i][j].x = j * TILE_WIDTH + (TILE_WIDTH / 2)
             map[i][j].y = (18 - i) * TILE_HEIGHT + (TILE_HEIGHT / 2)
             potion[i][j].x = j * TILE_WIDTH + (TILE_WIDTH / 2)
             potion[i][j].y = (18 - i) * TILE_HEIGHT + (TILE_HEIGHT / 2)
+            gate[i][j].x = j * TILE_WIDTH + (TILE_WIDTH / 2)
+            gate[i][j].y = (18 - i) * TILE_HEIGHT + (TILE_HEIGHT / 2)
             if tile_Setting[i][j] == '■':
                 map[i][j].isDraw = True
-            if tile_Setting[i][j] == 'R':
+            if tile_Setting[i][j] == 'Rp':
                 potion[i][j].color = 1
                 potion[i][j].isDraw = True
-            elif tile_Setting[i][j] == 'G':
+            elif tile_Setting[i][j] == 'Gp':
                 potion[i][j].color = 2
                 potion[i][j].isDraw = True
-            elif tile_Setting[i][j] == 'B':
+            elif tile_Setting[i][j] == 'Bp':
                 potion[i][j].color = 3
                 potion[i][j].isDraw = True
-            elif tile_Setting[i][j] == 'W':
+            elif tile_Setting[i][j] == 'Wp':
                 potion[i][j].color = 4
                 potion[i][j].isDraw = True
-            elif tile_Setting[i][j] == 'N':
+            elif tile_Setting[i][j] == 'Np':
                 potion[i][j].color = 0
                 potion[i][j].isDraw = True
+            if tile_Setting[i][j] == 'Rg':
+                gate[i][j].color = 1
+                gate[i][j].isDraw = True
+            elif tile_Setting[i][j] == 'Gg':
+                gate[i][j].color = 2
+                gate[i][j].isDraw = True
+            elif tile_Setting[i][j] == 'Bg':
+                gate[i][j].color = 3
+                gate[i][j].isDraw = True
+            elif tile_Setting[i][j] == 'Yg':
+                gate[i][j].color = 5
+                gate[i][j].isDraw = True
+            elif tile_Setting[i][j] == 'Cg':
+                gate[i][j].color = 6
+                gate[i][j].isDraw = True
+            elif tile_Setting[i][j] == 'Mg':
+                gate[i][j].color = 7
+                gate[i][j].isDraw = True
 
 
 def exit():
-    global map, terra, background, potion
+    global map, terra, background, potion, gate
     del(terra)
     del(map)
     del(background)
     del(potion)
+    del(gate)
 
 def pause():
     pass
@@ -141,5 +164,6 @@ def draw():
         for j in range(MAX_TILE_WIDTH):
             map[i][j].draw()
             potion[i][j].draw()
+            gate[i][j].draw()
     terra.draw()
     update_canvas()
