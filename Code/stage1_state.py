@@ -2,8 +2,8 @@ import game_framework
 from pico2d import *
 from background import Background
 from terra import Terra
-from color_potion import Potion
-from gate import Gate
+from item import Item
+from object import Object
 import tile
 import random
 
@@ -50,64 +50,75 @@ def collide(a, b):
 
 
 def enter():
-    global map, terra, background, potion, gate
+    global map, terra, background, item, object
     background = Background()
     terra = Terra()
     map = [[tile.Tile() for j in range(MAX_TILE_WIDTH)] for i in range(MAX_TILE_HEIGHT)]
-    potion = [[Potion() for j in range(MAX_TILE_WIDTH)] for i in range(MAX_TILE_HEIGHT)]
-    gate = [[Gate() for j in range(MAX_TILE_WIDTH)] for i in range(MAX_TILE_HEIGHT)]
+    item = [[Item() for j in range(MAX_TILE_WIDTH)] for i in range(MAX_TILE_HEIGHT)]
+    object = [[Object() for j in range(MAX_TILE_WIDTH)] for i in range(MAX_TILE_HEIGHT)]
     for i in range(MAX_TILE_HEIGHT):
         for j in range(MAX_TILE_WIDTH):
             map[i][j].x = j * TILE_WIDTH + (TILE_WIDTH / 2)
             map[i][j].y = (18 - i) * TILE_HEIGHT + (TILE_HEIGHT / 2)
-            potion[i][j].x = j * TILE_WIDTH + (TILE_WIDTH / 2)
-            potion[i][j].y = (18 - i) * TILE_HEIGHT + (TILE_HEIGHT / 2)
-            gate[i][j].x = j * TILE_WIDTH + (TILE_WIDTH / 2)
-            gate[i][j].y = (18 - i) * TILE_HEIGHT + (TILE_HEIGHT / 2)
+            item[i][j].x = j * TILE_WIDTH + (TILE_WIDTH / 2)
+            item[i][j].y = (18 - i) * TILE_HEIGHT + (TILE_HEIGHT / 2)
+            object[i][j].x = j * TILE_WIDTH + (TILE_WIDTH / 2)
+            object[i][j].y = (18 - i) * TILE_HEIGHT + (TILE_HEIGHT / 2)
             if tile_Setting[i][j] == '■':
                 map[i][j].isDraw = True
             if tile_Setting[i][j] == 'Rp':
-                potion[i][j].color = 1
-                potion[i][j].isDraw = True
+                item[i][j].color = 1
+                item[i][j].kind = 1
+                item[i][j].isDraw = True
             elif tile_Setting[i][j] == 'Gp':
-                potion[i][j].color = 2
-                potion[i][j].isDraw = True
+                item[i][j].color = 2
+                item[i][j].kind = 1
+                item[i][j].isDraw = True
             elif tile_Setting[i][j] == 'Bp':
-                potion[i][j].color = 3
-                potion[i][j].isDraw = True
+                item[i][j].color = 3
+                item[i][j].kind = 1
+                item[i][j].isDraw = True
             elif tile_Setting[i][j] == 'Wp':
-                potion[i][j].color = 4
-                potion[i][j].isDraw = True
+                item[i][j].color = 4
+                item[i][j].kind = 1
+                item[i][j].isDraw = True
             elif tile_Setting[i][j] == 'Np':
-                potion[i][j].color = 0
-                potion[i][j].isDraw = True
+                item[i][j].color = 0
+                item[i][j].kind = 1
+                item[i][j].isDraw = True
             if tile_Setting[i][j] == 'Rg':
-                gate[i][j].color = 1
-                gate[i][j].isDraw = True
+                object[i][j].color = 1
+                object[i][j].kind = 2
+                object[i][j].isDraw = True
             elif tile_Setting[i][j] == 'Gg':
-                gate[i][j].color = 2
-                gate[i][j].isDraw = True
+                object[i][j].color = 2
+                object[i][j].kind = 2
+                object[i][j].isDraw = True
             elif tile_Setting[i][j] == 'Bg':
-                gate[i][j].color = 3
-                gate[i][j].isDraw = True
+                object[i][j].color = 3
+                object[i][j].kind = 2
+                object[i][j].isDraw = True
             elif tile_Setting[i][j] == 'Yg':
-                gate[i][j].color = 5
-                gate[i][j].isDraw = True
+                object[i][j].color = 5
+                object[i][j].kind = 2
+                object[i][j].isDraw = True
             elif tile_Setting[i][j] == 'Cg':
-                gate[i][j].color = 6
-                gate[i][j].isDraw = True
+                object[i][j].color = 6
+                object[i][j].kind = 2
+                object[i][j].isDraw = True
             elif tile_Setting[i][j] == 'Mg':
-                gate[i][j].color = 7
-                gate[i][j].isDraw = True
+                object[i][j].color = 7
+                object[i][j].kind = 2
+                object[i][j].isDraw = True
 
 
 def exit():
-    global map, terra, background, potion, gate
+    global map, terra, background, item, object
     del(terra)
     del(map)
     del(background)
-    del(potion)
-    del(gate)
+    del(item)
+    del(object)
 
 def pause():
     pass
@@ -137,13 +148,13 @@ def update():
     # 충돌체크
     for i in range(MAX_TILE_HEIGHT):
         for j in range(MAX_TILE_WIDTH):
-            if potion[i][j].isDraw:
-                if collide(terra, potion[i][j]):
-                    potion[i][j].isDraw = False
-                    if potion[i][j].color == 4:
+            if item[i][j].isDraw:
+                if collide(terra, item[i][j]):
+                    item[i][j].isDraw = False
+                    if item[i][j].color == 4:
                         terra.color = 0
                     else:
-                        terra.color = potion[i][j].color
+                        terra.color = item[i][j].color
 
             if map[i][j].isDraw:
                 map[i][j].update(terra)
@@ -163,7 +174,7 @@ def draw():
     for i in range(MAX_TILE_HEIGHT):
         for j in range(MAX_TILE_WIDTH):
             map[i][j].draw()
-            potion[i][j].draw()
-            gate[i][j].draw()
+            item[i][j].draw()
+            object[i][j].draw()
     terra.draw()
     update_canvas()
