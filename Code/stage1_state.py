@@ -30,10 +30,10 @@ tile_Setting = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Wp', 0, 0, 0, 0, 0, 0, 0, '■', '■', '■', 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Gp', 0, 0, 0, 0, 0, 0, 0, '■', '■', '■', 0, 0, 0, 0],
                 [0, '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, '■', '■', '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, '■', 0, 0, 0, '■', '■', '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, '■', 'Rp', 0, 0, 'Rg', 0, 'Gp', 0, 0, 0, 0, 'Bp', 0, 0, 0, 0, 0, 0, 0, 0, 'Gj', 0, 0, 0],
+                [0, '■', 'Rp', 0, 0, 'Rg', 0, 'Bt', 0, 0, 0, 0, 'Bp', 0, 0, 0, 0, 0, 0, 0, 0, 'Gj', 0, 0, 0],
                 ['■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■']
                 ]
 
@@ -136,6 +136,31 @@ def enter():
                 object[i][j].color = 7
                 object[i][j].kind = 1
                 object[i][j].isDraw = True
+            elif tile_Setting[i][j] == 'Rt':
+                object[i][j].color = 1
+                object[i][j].kind = 0
+                object[i][j].isDraw = True
+            elif tile_Setting[i][j] == 'Gt':
+                object[i][j].color = 2
+                object[i][j].kind = 0
+                object[i][j].isDraw = True
+            elif tile_Setting[i][j] == 'Bt':
+                object[i][j].color = 3
+                object[i][j].kind = 0
+                object[i][j].isDraw = True
+            elif tile_Setting[i][j] == 'Yt':
+                object[i][j].color = 5
+                object[i][j].kind = 0
+                object[i][j].isDraw = True
+            elif tile_Setting[i][j] == 'Ct':
+                object[i][j].color = 6
+                object[i][j].kind = 0
+                object[i][j].isDraw = True
+            elif tile_Setting[i][j] == 'Mt':
+                object[i][j].color = 7
+                object[i][j].kind = 0
+                object[i][j].isDraw = True
+
 
 
 
@@ -187,6 +212,15 @@ def update():
                 if object[i][j].kind == 1 and collide(terra, object[i][j]):
                     if terra.color == object[i][j].color:
                         terra.super_jump()
+
+                if object[i][j].kind == 0:
+                    if collide(terra, object[i][j]) and terra.color == object[i][j].color:
+                        if object[i][j].attack_mode:
+                            print("사망!")
+                        else:
+                            object[i][j].attack_mode = True
+                    else:
+                        object[i][j].attack_mode = False
 
             if map[i][j].isDraw:
                 map[i][j].update(terra)

@@ -15,6 +15,7 @@ class Object:
         self.isDraw = False
         self.color = 0
         self.kind = 0
+        self.attack_mode = False
         self.collided_Rect = [0, 0, 0, 0]
         self.collided_Rect_Height = 0
         self.collided_Rect_Width = 0
@@ -24,7 +25,10 @@ class Object:
 
     def draw(self):
         if self.isDraw:
-            self.image.clip_draw(self.color * 32, self.kind * 32, Object.GATE_WIDTH, Object.GATE_HEIGHT,
+            if self.kind == 0 and self.attack_mode == False:
+                self.image.clip_draw(0, self.kind * 32, Object.GATE_WIDTH, Object.GATE_HEIGHT, self.x, self.y, 32, 32)
+            else:
+                self.image.clip_draw(self.color * 32, self.kind * 32, Object.GATE_WIDTH, Object.GATE_HEIGHT,
                                  self.x, self.y, 32, 32)
 
     def update(self, terra):
@@ -51,5 +55,7 @@ class Object:
     def get_bb(self):
         if self.kind:
             return self.x - 16, self.y - 16, self.x + 16, self.y - 6
-        else:
+        elif self.attack_mode:
             return self.x - 3, self.y - 13, self.x + 3, self.y + 13
+        else:
+            return self.x - 48, self.y - 16, self.x + 48, self.y + 16
