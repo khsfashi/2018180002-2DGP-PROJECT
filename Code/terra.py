@@ -55,9 +55,9 @@ class IdleState:
     @staticmethod
     def draw(terra):
         if terra.dir == 1:
-            terra.image.clip_draw(0, 0, Terra.CHARACTER_WIDTH, Terra.CHARACTER_HEIGHT, terra.x, terra.y)
+            terra.image.clip_draw(terra.color * 96, 0, Terra.CHARACTER_WIDTH, Terra.CHARACTER_HEIGHT, terra.x, terra.y)
         else:
-            terra.image.clip_draw(0, 32, Terra.CHARACTER_WIDTH, Terra.CHARACTER_HEIGHT, terra.x, terra.y)
+            terra.image.clip_draw(terra.color * 96, 32, Terra.CHARACTER_WIDTH, Terra.CHARACTER_HEIGHT, terra.x, terra.y)
 
 
 class RunState:
@@ -90,10 +90,10 @@ class RunState:
     @staticmethod
     def draw(terra):
         if terra.dir == 1:
-            terra.image.clip_draw(int(terra.frame) * 32, 0, Terra.CHARACTER_WIDTH,
+            terra.image.clip_draw(int(terra.frame) * 32 + terra.color * 96, 0, Terra.CHARACTER_WIDTH,
                                   Terra.CHARACTER_HEIGHT, terra.x, terra.y)
         else:
-            terra.image.clip_draw(int(terra.frame) * 32, 32, Terra.CHARACTER_WIDTH,
+            terra.image.clip_draw(int(terra.frame) * 32 + terra.color * 96, 32, Terra.CHARACTER_WIDTH,
                                   Terra.CHARACTER_HEIGHT, terra.x, terra.y)
 
 next_state_table = {
@@ -110,7 +110,7 @@ class Terra:
     CHARACTER_HEIGHT = 32
 
     def __init__(self):
-        self.image = load_image('Resource\\Character\\Untitled1.png')
+        self.image = load_image('Resource\\Character\\Scientists.png')
         self.x, self.y = 200, 200
         self.frame = 0
         self.dir = 0

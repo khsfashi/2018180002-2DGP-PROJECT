@@ -2,6 +2,7 @@ import game_framework
 from pico2d import *
 from background import Background
 from terra import Terra
+from color_potion import Potion
 import tile
 import random
 
@@ -28,33 +29,52 @@ tile_Setting = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '■', '■', '■', 0, 0, 0, 0],
-                [0, '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, '■', '■', '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'W', 0, 0, 0, 0, 0, 0, 0, '■', '■', '■', 0, 0, 0, 0],
+                [0, '■', 0, 0, 0, 'N', 0, 0, 0, 0, 0, '■', '■', '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, '■', 0, 0, 0, '■', '■', '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, '■', 'R', 0, 0, 0, 0, 'G', 0, 0, 0, 0, 'B', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 ['■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                 ]
 
 
 
 def enter():
-    global map, terra, background
+    global map, terra, background, potion
     background = Background()
     terra = Terra()
     map = [[tile.Tile() for j in range(MAX_TILE_WIDTH)] for i in range(MAX_TILE_HEIGHT)]
+    potion = [[Potion() for j in range(MAX_TILE_WIDTH)] for i in range(MAX_TILE_HEIGHT)]
     for i in range(MAX_TILE_HEIGHT):
         for j in range(MAX_TILE_WIDTH):
             map[i][j].x = j * TILE_WIDTH + (TILE_WIDTH / 2)
             map[i][j].y = (18 - i) * TILE_HEIGHT + (TILE_HEIGHT / 2)
+            potion[i][j].x = j * TILE_WIDTH + (TILE_WIDTH / 2)
+            potion[i][j].y = (18 - i) * TILE_HEIGHT + (TILE_HEIGHT / 2)
             if tile_Setting[i][j] == '■':
                 map[i][j].isDraw = True
+            if tile_Setting[i][j] == 'R':
+                potion[i][j].color = 1
+                potion[i][j].isDraw = True
+            elif tile_Setting[i][j] == 'G':
+                potion[i][j].color = 2
+                potion[i][j].isDraw = True
+            elif tile_Setting[i][j] == 'B':
+                potion[i][j].color = 3
+                potion[i][j].isDraw = True
+            elif tile_Setting[i][j] == 'W':
+                potion[i][j].color = 4
+                potion[i][j].isDraw = True
+            elif tile_Setting[i][j] == 'N':
+                potion[i][j].color = 0
+                potion[i][j].isDraw = True
 
 
 def exit():
-    global map, terra, background
+    global map, terra, background, potion
     del(terra)
     del(map)
     del(background)
+    del(potion)
 
 def pause():
     pass
@@ -102,5 +122,6 @@ def draw():
     for i in range(MAX_TILE_HEIGHT):
         for j in range(MAX_TILE_WIDTH):
             map[i][j].draw()
+            potion[i][j].draw()
     terra.draw()
     update_canvas()
