@@ -111,7 +111,7 @@ class Terra:
 
     def __init__(self):
         self.image = load_image('Resource\\Character\\Scientists1.png')
-        self.x, self.y = 200, 200
+        self.x, self.y = 48, 48
         self.frame = 0
         self.dir = 0
         self.velocity = 0
