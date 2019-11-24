@@ -110,7 +110,7 @@ class Terra:
     CHARACTER_HEIGHT = 32
 
     def __init__(self):
-        self.image = load_image('Resource\\Character\\Scientists.png')
+        self.image = load_image('Resource\\Character\\Scientists1.png')
         self.x, self.y = 200, 200
         self.frame = 0
         self.dir = 0

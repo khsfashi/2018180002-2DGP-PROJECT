@@ -15,7 +15,7 @@ class Object:
         self.color = 0
         self.kind = 0
         if Object.image == None:
-            Object.image = load_image('Resource\\Object\\Object_Sheet.png')
+            Object.image = load_image('Resource\\Object\\Object_Sheet1.png')
 
 
     def draw(self):

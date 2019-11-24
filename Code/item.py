@@ -15,7 +15,7 @@ class Item:
         self.color = 0
         self.kind = 0
         if Item.image == None:
-            Item.image = load_image('Resource\\Object\\Item_Sheet.png')
+            Item.image = load_image('Resource\\Object\\Item_Sheet1.png')
 
     def draw(self):
         if self.isDraw:
