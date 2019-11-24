@@ -155,6 +155,8 @@ def update():
                         terra.color = 0
                     else:
                         terra.color = item[i][j].color
+            if object[i][j].isDraw:
+                object[i][j].update(terra)
 
             if map[i][j].isDraw:
                 map[i][j].update(terra)
