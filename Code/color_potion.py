@@ -29,3 +29,6 @@ class Potion:
                 self.image_B.clip_draw(0, 0, Potion.POTION_WIDTH, Potion.POTION_HEIGHT, self.x, self.y, 32, 32)
             elif self.color == 4:
                 self.image_W.clip_draw(0, 0, Potion.POTION_WIDTH, Potion.POTION_HEIGHT, self.x, self.y, 32, 32)
+
+    def get_bb(self):
+        return self.x - 10, self.y - 16, self.x + 10, self.y + 16

@@ -143,3 +143,6 @@ class Terra:
         if event.type == SDL_KEYDOWN and event.key == SDLK_SPACE and not self.jumping:
             self.jumping = True
             self.acceleration = 3
+
+    def get_bb(self):
+        return self.x - 10, self.y - 16, self.x + 10, self.y + 16

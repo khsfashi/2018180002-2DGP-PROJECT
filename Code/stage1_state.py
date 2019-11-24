@@ -37,6 +37,16 @@ tile_Setting = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
                 ]
 
 
+def collide(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a > right_b: return False
+    if right_a < left_b: return False
+    if top_a < bottom_b: return False
+    if bottom_a > top_b: return False
+    return True
+
 
 def enter():
     global map, terra, background, potion
@@ -104,13 +114,21 @@ def update():
     # 충돌체크
     for i in range(MAX_TILE_HEIGHT):
         for j in range(MAX_TILE_WIDTH):
-            if map[i][j].isDraw == True:
+            if potion[i][j].isDraw:
+                if collide(terra, potion[i][j]):
+                    potion[i][j].isDraw = False
+                    if potion[i][j].color == 4:
+                        terra.color = 0
+                    else:
+                        terra.color = potion[i][j].color
+
+            if map[i][j].isDraw:
                 map[i][j].update(terra)
                 if tile.intersected_rectangle(map[i][j].collided_Rect, map[i][j].x - 16, map[i][j].y + 16, map[i][j].x + 16,
                                  map[i][j].y - 16, terra.x - 10, terra.y + 16, terra.x + 10, terra.y - 16):
                     cnt = 1
     if cnt == 0:
-        if terra.jumping == False:
+        if not terra.jumping:
             terra.acceleration = 0
         terra.jumping = True
     else:
