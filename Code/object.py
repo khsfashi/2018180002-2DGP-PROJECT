@@ -47,3 +47,9 @@ class Object:
                     terra.x -= self.collided_Rect_Width
                 elif self.collided_Rect[2] == self.x + 16:
                     terra.x += self.collided_Rect_Width
+
+    def get_bb(self):
+        if self.kind:
+            return self.x - 16, self.y - 16, self.x + 16, self.y - 6
+        else:
+            return self.x - 3, self.y - 13, self.x + 3, self.y + 13

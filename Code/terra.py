@@ -146,3 +146,7 @@ class Terra:
 
     def get_bb(self):
         return self.x - 10, self.y - 16, self.x + 10, self.y + 16
+
+    def super_jump(self):
+        self.acceleration = 5
+        self.jumping = True

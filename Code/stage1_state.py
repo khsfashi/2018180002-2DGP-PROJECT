@@ -33,7 +33,7 @@ tile_Setting = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Wp', 0, 0, 0, 0, 0, 0, 0, '■', '■', '■', 0, 0, 0, 0],
                 [0, '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, '■', '■', '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, '■', 0, 0, 0, '■', '■', '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, '■', 'Rp', 0, 0, 'Rg', 0, 'Gp', 0, 0, 0, 0, 'Bp', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, '■', 'Rp', 0, 0, 'Rg', 0, 'Gp', 0, 0, 0, 0, 'Bp', 0, 0, 0, 0, 0, 0, 0, 0, 'Gj', 0, 0, 0],
                 ['■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■']
                 ]
 
@@ -64,9 +64,11 @@ def enter():
             item[i][j].y = (18 - i) * TILE_HEIGHT + (TILE_HEIGHT / 2)
             object[i][j].x = j * TILE_WIDTH + (TILE_WIDTH / 2)
             object[i][j].y = (18 - i) * TILE_HEIGHT + (TILE_HEIGHT / 2)
-            if tile_Setting[i][j] == '■':
+            if tile_Setting[i][j] == 0:
+                tile_Setting[i][j] = 0
+            elif tile_Setting[i][j] == '■':
                 map[i][j].isDraw = True
-            if tile_Setting[i][j] == 'Rp':
+            elif tile_Setting[i][j] == 'Rp':
                 item[i][j].color = 1
                 item[i][j].kind = 1
                 item[i][j].isDraw = True
@@ -86,7 +88,7 @@ def enter():
                 item[i][j].color = 0
                 item[i][j].kind = 1
                 item[i][j].isDraw = True
-            if tile_Setting[i][j] == 'Rg':
+            elif tile_Setting[i][j] == 'Rg':
                 object[i][j].color = 1
                 object[i][j].kind = 2
                 object[i][j].isDraw = True
@@ -110,6 +112,31 @@ def enter():
                 object[i][j].color = 7
                 object[i][j].kind = 2
                 object[i][j].isDraw = True
+            elif tile_Setting[i][j] == 'Rj':
+                object[i][j].color = 1
+                object[i][j].kind = 1
+                object[i][j].isDraw = True
+            elif tile_Setting[i][j] == 'Gj':
+                object[i][j].color = 2
+                object[i][j].kind = 1
+                object[i][j].isDraw = True
+            elif tile_Setting[i][j] == 'Bj':
+                object[i][j].color = 3
+                object[i][j].kind = 1
+                object[i][j].isDraw = True
+            elif tile_Setting[i][j] == 'Yj':
+                object[i][j].color = 5
+                object[i][j].kind = 1
+                object[i][j].isDraw = True
+            elif tile_Setting[i][j] == 'Cj':
+                object[i][j].color = 6
+                object[i][j].kind = 1
+                object[i][j].isDraw = True
+            elif tile_Setting[i][j] == 'Mj':
+                object[i][j].color = 7
+                object[i][j].kind = 1
+                object[i][j].isDraw = True
+
 
 
 def exit():
@@ -157,6 +184,9 @@ def update():
                         terra.color = item[i][j].color
             if object[i][j].isDraw:
                 object[i][j].update(terra)
+                if object[i][j].kind == 1 and collide(terra, object[i][j]):
+                    if terra.color == object[i][j].color:
+                        terra.super_jump()
 
             if map[i][j].isDraw:
                 map[i][j].update(terra)
