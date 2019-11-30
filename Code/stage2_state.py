@@ -52,6 +52,7 @@ def collide(a, b):
 
 def enter():
     global map, terra, background, item, object, potion_cnt
+
     background = Background()
     terra = Terra()
     map = [[tile.Tile() for j in range(MAX_TILE_WIDTH)] for i in range(MAX_TILE_HEIGHT)]

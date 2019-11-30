@@ -226,8 +226,7 @@ def update():
                     if collide(terra, object[i][j]) and terra.color == object[i][j].color:
                         if object[i][j].attack_mode:
                             print("사망!")
-                            game_framework.quit()
-                            # game_framework.change_state(reset_state)
+                            game_framework.change_state(reset_state)
                         else:
                             object[i][j].attack_mode = True
                     else:
@@ -247,6 +246,8 @@ def update():
 
     if potion_cnt == 0 and terra.x >= 800:
         print("스테이지 클리어! 다음 스테이지로!")
+        for i in range(len(terra.event_que)):
+            del(terra.event_que[i])
         game_framework.change_state(stage2_state)
 
 def draw():
