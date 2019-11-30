@@ -191,6 +191,9 @@ def handle_events():
     global running
 
     events = get_events()
+    if not terra.enter and len(events) > 0:
+        events.pop()
+        terra.enter = True
 
     for event in events:
         if event.type == SDL_QUIT:
