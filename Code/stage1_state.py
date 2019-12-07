@@ -192,7 +192,8 @@ def handle_events():
 
     events = get_events()
     if not terra.enter and len(events) > 0:
-        events.clear()
+        while len(events) > 0:
+            events.pop()
         terra.enter = True
 
     for event in events:
