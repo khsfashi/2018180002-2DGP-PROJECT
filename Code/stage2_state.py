@@ -229,8 +229,7 @@ def update():
                     if collide(terra, object[i][j]) and terra.color == object[i][j].color:
                         if object[i][j].attack_mode:
                             print("사망!")
-                            game_framework.quit()
-                            # game_framework.change_state(reset_state)
+                            game_framework.change_state(reset_state)
                         else:
                             object[i][j].attack_mode = True
                     else:
