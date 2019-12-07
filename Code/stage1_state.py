@@ -203,6 +203,8 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_r:
+            game_framework.change_state(reset_state)
         else:
             terra.handle_event(event)
 
