@@ -1,3 +1,5 @@
+import reset_state
+
 class GameState:
     def __init__(self, state):
         self.enter = state.enter
@@ -52,6 +54,17 @@ def change_state(state):
     stack.append(state)
     state.enter()
 
+
+def reset(state):
+    global stack
+    if (len(stack) > 0):
+        # execute the current state's exit function
+        stack[-1].exit()
+        # remove the current state
+        stack.pop()
+    reset_state.now_stage = state
+    stack.append(reset_state)
+    reset_state.enter()
 
 
 def push_state(state):

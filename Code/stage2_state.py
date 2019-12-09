@@ -203,7 +203,7 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_r:
-            game_framework.change_state(reset_state)
+            game_framework.reset(2)
         else:
             terra.handle_event(event)
 
@@ -234,7 +234,7 @@ def update():
                     if collide(terra, object[i][j]) and terra.color == object[i][j].color:
                         if object[i][j].attack_mode:
                             print("사망!")
-                            game_framework.change_state(reset_state)
+                            game_framework.reset(2)
                         else:
                             object[i][j].attack_mode = True
                     else:
