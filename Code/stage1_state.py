@@ -74,101 +74,58 @@ def enter():
                 map[i][j].isDraw = True
             elif tile_Setting[i][j] == 'Rp':
                 potion_cnt += 1
-                item[i][j].color = 1
-                item[i][j].kind = 1
-                item[i][j].isDraw = True
+                item[i][j].setting(1, 1)
             elif tile_Setting[i][j] == 'Gp':
                 potion_cnt += 1
-                item[i][j].color = 2
-                item[i][j].kind = 1
-                item[i][j].isDraw = True
+                item[i][j].setting(2, 1)
             elif tile_Setting[i][j] == 'Bp':
                 potion_cnt += 1
-                item[i][j].color = 3
-                item[i][j].kind = 1
-                item[i][j].isDraw = True
+                item[i][j].setting(3, 1)
             elif tile_Setting[i][j] == 'Wp':
                 potion_cnt += 1
-                item[i][j].color = 4
-                item[i][j].kind = 1
-                item[i][j].isDraw = True
+                item[i][j].setting(4, 1)
             elif tile_Setting[i][j] == 'Np':
                 potion_cnt += 1
-                item[i][j].color = 0
-                item[i][j].kind = 1
-                item[i][j].isDraw = True
+                item[i][j].setting(0, 1)
+            elif tile_Setting[i][j] == 'P':
+                item[i][j].setting(0, 0)
             elif tile_Setting[i][j] == 'Rg':
-                object[i][j].color = 1
-                object[i][j].kind = 2
-                object[i][j].isDraw = True
+                object[i][j].setting(1, 2)
             elif tile_Setting[i][j] == 'Gg':
-                object[i][j].color = 2
-                object[i][j].kind = 2
-                object[i][j].isDraw = True
+                object[i][j].setting(2, 2)
             elif tile_Setting[i][j] == 'Bg':
-                object[i][j].color = 3
-                object[i][j].kind = 2
-                object[i][j].isDraw = True
+                object[i][j].setting(3, 2)
             elif tile_Setting[i][j] == 'Yg':
-                object[i][j].color = 5
-                object[i][j].kind = 2
-                object[i][j].isDraw = True
+                object[i][j].setting(5, 2)
             elif tile_Setting[i][j] == 'Mg':
-                object[i][j].color = 6
-                object[i][j].kind = 2
-                object[i][j].isDraw = True
+                object[i][j].setting(6, 2)
             elif tile_Setting[i][j] == 'Cg':
-                object[i][j].color = 7
-                object[i][j].kind = 2
-                object[i][j].isDraw = True
+                object[i][j].setting(7, 2)
             elif tile_Setting[i][j] == 'Rj':
-                object[i][j].color = 1
-                object[i][j].kind = 1
-                object[i][j].isDraw = True
+                object[i][j].setting(1, 1)
             elif tile_Setting[i][j] == 'Gj':
-                object[i][j].color = 2
-                object[i][j].kind = 1
+                object[i][j].setting(2, 1)
                 object[i][j].isDraw = True
             elif tile_Setting[i][j] == 'Bj':
-                object[i][j].color = 3
-                object[i][j].kind = 1
-                object[i][j].isDraw = True
+                object[i][j].setting(3, 1)
             elif tile_Setting[i][j] == 'Yj':
-                object[i][j].color = 5
-                object[i][j].kind = 1
-                object[i][j].isDraw = True
+                object[i][j].setting(5, 1)
             elif tile_Setting[i][j] == 'Mj':
-                object[i][j].color = 6
-                object[i][j].kind = 1
-                object[i][j].isDraw = True
+                object[i][j].setting(6, 1)
             elif tile_Setting[i][j] == 'Cj':
-                object[i][j].color = 7
-                object[i][j].kind = 1
-                object[i][j].isDraw = True
+                object[i][j].setting(7, 1)
             elif tile_Setting[i][j] == 'Rt':
-                object[i][j].color = 1
-                object[i][j].kind = 0
-                object[i][j].isDraw = True
+                object[i][j].setting(1, 0)
             elif tile_Setting[i][j] == 'Gt':
-                object[i][j].color = 2
-                object[i][j].kind = 0
-                object[i][j].isDraw = True
+                object[i][j].setting(2, 0)
             elif tile_Setting[i][j] == 'Bt':
-                object[i][j].color = 3
-                object[i][j].kind = 0
-                object[i][j].isDraw = True
+                object[i][j].setting(3, 0)
             elif tile_Setting[i][j] == 'Yt':
-                object[i][j].color = 5
-                object[i][j].kind = 0
-                object[i][j].isDraw = True
+                object[i][j].setting(5, 0)
             elif tile_Setting[i][j] == 'Mt':
-                object[i][j].color = 6
-                object[i][j].kind = 0
-                object[i][j].isDraw = True
+                object[i][j].setting(6, 0)
             elif tile_Setting[i][j] == 'Ct':
-                object[i][j].color = 7
-                object[i][j].kind = 0
-                object[i][j].isDraw = True
+                object[i][j].setting(7, 0)
 
 
 
@@ -223,6 +180,8 @@ def update():
                     item[i][j].isDraw = False
                     if item[i][j].kind == 1:
                         potion_cnt -= 1
+                    elif item[i][j].kind == 0:
+                        terra.save_color()
                     if item[i][j].color == 4 or item[i][j].color == 0:
                         terra.color = 0
                     else:
@@ -233,7 +192,7 @@ def update():
                     if terra.color == object[i][j].color:
                         terra.super_jump()
 
-                if object[i][j].kind == 0:
+                elif object[i][j].kind == 0:
                     if collide(terra, object[i][j]) and terra.color == object[i][j].color:
                         if object[i][j].attack_mode:
                             print("사망!")

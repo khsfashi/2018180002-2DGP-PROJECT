@@ -111,6 +111,7 @@ class Terra:
 
     def __init__(self):
         self.image = load_image('Resource\\Character\\Scientists2.png')
+        self.color_image = load_image('Resource\\Object\\Object_Sheet1.png')
         self.x, self.y = 48, 48
         self.frame = 0
         self.dir = 0
@@ -118,6 +119,7 @@ class Terra:
         self.acceleration = 0
         self.jumping = True
         self.color = 0
+        self.saved_color = 0
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
@@ -142,6 +144,10 @@ class Terra:
 
     def draw(self):
         self.cur_state.draw(self)
+        if self.dir == 1:
+            self.color_image.clip_draw(self.saved_color * 32, 2 * 32 + 2, 6, 10, self.x - 10, self.y + 6)
+        else:
+            self.color_image.clip_draw(self.saved_color * 32, 2 * 32 + 2, 6, 10, self.x + 10, self.y + 6)
 
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
@@ -151,6 +157,8 @@ class Terra:
             self.jump_sound.play()
             self.jumping = True
             self.acceleration = 3
+        if event.type == SDL_KEYDOWN and event.key == SDLK_f:
+            self.set_saved_color_to_color()
 
     def get_bb(self):
         return self.x - 10, self.y - 16, self.x + 10, self.y + 16
@@ -169,3 +177,13 @@ class Terra:
             self.color = color
         else:
             self.color = self.color + color + 2
+
+    def save_color(self):
+        self.saved_color = self.color
+        print(self.saved_color)
+        self.color = 0
+
+    def set_saved_color_to_color(self):
+        if self.saved_color != 0:
+            self.color = self.saved_color
+            self.saved_color = 0

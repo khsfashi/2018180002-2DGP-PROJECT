@@ -59,3 +59,8 @@ class Object:
             return self.x - 3, self.y - 13, self.x + 3, self.y + 13
         else:
             return self.x - 48, self.y - 16, self.x + 48, self.y + 16
+
+    def setting(self, color, kind):
+        self.color = color
+        self.kind = kind
+        self.isDraw = True

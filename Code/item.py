@@ -24,3 +24,8 @@ class Item:
 
     def get_bb(self):
         return self.x - 10, self.y - 16, self.x + 10, self.y + 16
+
+    def setting(self, color, kind):
+        self.color = color
+        self.kind = kind
+        self.isDraw = True
