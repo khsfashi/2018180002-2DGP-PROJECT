@@ -164,6 +164,8 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_r:
             # game_framework.change_state(reset_state)
             game_framework.reset(1)
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_q:
+            game_framework.change_state(stage2_state)
         else:
             terra.handle_event(event)
 

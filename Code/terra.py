@@ -173,7 +173,7 @@ class Terra:
         self.drink_sound.play()
 
     def color_change(self, color):
-        if self.color == 0 or self.color >= 5:
+        if self.color == 0 or self.color >= 5 or self.color == color:
             self.color = color
         else:
             self.color = self.color + color + 2

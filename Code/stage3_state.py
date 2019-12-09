@@ -6,14 +6,14 @@ from item import Item
 from object import Object
 import tile
 import reset_state
-import stage3_state
+import stage4_state
 
 # 상수 모음
 MAX_TILE_WIDTH = 25
 MAX_TILE_HEIGHT = 19
 TILE_WIDTH = 32
 TILE_HEIGHT = 32
-name = "Stage2State"
+name = "Stage3State"
 
 cnt = 0
 potion_cnt = 0
@@ -22,20 +22,20 @@ tile_Setting = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '■', '■', '■', '■', '■', '■', '■', '■', '■', '■'],
-                ['■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '■', 0, 0, 0, 0, 0, 0, 0, 'Np', '■'],
-                ['■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '■', 0, 0, 0, 0, 0, 0, 0, 0, '■'],
-                ['■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '■', 0, 0, 0, 0, 0, '■', 0, 0, '■'],
-                ['■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '■', 0, 0, 0, 0, 0, '■', 0, 0, '■'],
-                ['■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '■', 0, 0, 0, 0, 0, '■', 0, 0, '■'],
-                ['■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', 0, 0, 0, 0, 0, '■', 0, 0, '■'],
-                ['■', 0, 0, 'Rp', 0, 0, '■', 0, 0,  0, 0, 0, 0, 0, 0, '■', 0, 0, 0, 0, 0, '■', 0, 0, '■'],
-                ['■', 0, 0, 0, 0, 0, 'Rg', 'Rp', 0, 0, 0, 0, 'P', 0, 0, 'Yg', 0, 0, 0, 0, 'P', 'Rg', 0, 'Yj', '■'],
-                ['■', '■', '■', '■', '■', '■', '■', '■', 0, 0, '■', '■', '■', '■', '■', '■', '■', 0, 0, '■', '■', '■', '■', '■', '■'],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                ['■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                ['■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                ['■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                ['■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                ['■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                ['■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                ['■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                ['■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                ['■', '■', '■', '■', '■', '■', '■', '■', 0, 0, 0, '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 ['■', 0, 0, 0, 0, 0, 0, '■', 0, 0, 0, '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 ['■', 'Gp', 'Rp', 'Gp', 'Rp', 0, 0, '■', 0, 0, 0, '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 ['■', 0, 0, 0, 0, 0, 0, '■', 0, 0, 0, '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                ['■', 0, 0, 0, 0, 0, 0, 'Yg', 0, 'Yj', 0, '■', 0, 'Rp', 0, 0, 0, 0, 'Rj', 0, 0, 0, 0, 0, 0],
+                ['■', 0, 0, 0, 0, 0, 0, 'Yg', 0, 'Yj', 0, '■', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 ['■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■', '■']
                 ]
 
@@ -57,7 +57,7 @@ def enter():
     cnt = 0
 
     background = Background()
-    background.kind = 1
+    background.kind = 2
     terra = Terra()
     map = [[tile.Tile() for j in range(MAX_TILE_WIDTH)] for i in range(MAX_TILE_HEIGHT)]
     item = [[Item() for j in range(MAX_TILE_WIDTH)] for i in range(MAX_TILE_HEIGHT)]
@@ -162,9 +162,9 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_r:
-            game_framework.reset(2)
+            game_framework.reset(3)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_q:
-            game_framework.change_state(stage3_state)
+            game_framework.change_state(stage4_state)
         else:
             terra.handle_event(event)
 
@@ -197,7 +197,7 @@ def update():
                     if collide(terra, object[i][j]) and terra.color == object[i][j].color:
                         if object[i][j].attack_mode:
                             print("사망!")
-                            game_framework.reset(2)
+                            game_framework.reset(3)
                         else:
                             object[i][j].attack_mode = True
                     else:
@@ -218,9 +218,9 @@ def update():
     if terra.x >= 800:
         if potion_cnt == 0:
             print("스테이지 클리어! 다음 스테이지로!")
-            game_framework.change_state(stage3_state)
+            game_framework.change_state(stage4_state)
         else:
-            game_framework.reset(2)
+            game_framework.reset(3)
 
 
 def draw():
