@@ -123,7 +123,7 @@ class Terra:
         self.cur_state.enter(self, None)
         self.enter = False
         self.drink_sound = load_wav('Resource\\Sounds\\drink_Potion.wav')
-        self.drink_sound.set_volume(32)
+        self.drink_sound.set_volume(100)
 
     def add_event(self, event):
         self.event_que.insert(0, event)

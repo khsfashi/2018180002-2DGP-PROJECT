@@ -217,6 +217,7 @@ def update():
         for j in range(MAX_TILE_WIDTH):
             if item[i][j].isDraw:
                 if collide(terra, item[i][j]):
+                    terra.drink_potion()
                     item[i][j].isDraw = False
                     if item[i][j].kind == 1:
                         potion_cnt -= 1
