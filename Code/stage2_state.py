@@ -113,11 +113,11 @@ def enter():
                 object[i][j].color = 5
                 object[i][j].kind = 2
                 object[i][j].isDraw = True
-            elif tile_Setting[i][j] == 'Cg':
+            elif tile_Setting[i][j] == 'Mg':
                 object[i][j].color = 6
                 object[i][j].kind = 2
                 object[i][j].isDraw = True
-            elif tile_Setting[i][j] == 'Mg':
+            elif tile_Setting[i][j] == 'Cg':
                 object[i][j].color = 7
                 object[i][j].kind = 2
                 object[i][j].isDraw = True
@@ -137,11 +137,11 @@ def enter():
                 object[i][j].color = 5
                 object[i][j].kind = 1
                 object[i][j].isDraw = True
-            elif tile_Setting[i][j] == 'Cj':
+            elif tile_Setting[i][j] == 'Mj':
                 object[i][j].color = 6
                 object[i][j].kind = 1
                 object[i][j].isDraw = True
-            elif tile_Setting[i][j] == 'Mj':
+            elif tile_Setting[i][j] == 'Cj':
                 object[i][j].color = 7
                 object[i][j].kind = 1
                 object[i][j].isDraw = True
@@ -161,11 +161,11 @@ def enter():
                 object[i][j].color = 5
                 object[i][j].kind = 0
                 object[i][j].isDraw = True
-            elif tile_Setting[i][j] == 'Ct':
+            elif tile_Setting[i][j] == 'Mt':
                 object[i][j].color = 6
                 object[i][j].kind = 0
                 object[i][j].isDraw = True
-            elif tile_Setting[i][j] == 'Mt':
+            elif tile_Setting[i][j] == 'Ct':
                 object[i][j].color = 7
                 object[i][j].kind = 0
                 object[i][j].isDraw = True
@@ -220,10 +220,10 @@ def update():
                     item[i][j].isDraw = False
                     if item[i][j].kind == 1:
                         potion_cnt -= 1
-                    if item[i][j].color == 4:
+                    if item[i][j].color == 4 or item[i][j].color == 0:
                         terra.color = 0
                     else:
-                        terra.color = item[i][j].color
+                        terra.color_change(item[i][j].color)
             if object[i][j].isDraw:
                 object[i][j].update(terra)
                 if object[i][j].kind == 1 and collide(terra, object[i][j]):

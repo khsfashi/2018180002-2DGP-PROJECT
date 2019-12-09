@@ -110,7 +110,7 @@ class Terra:
     CHARACTER_HEIGHT = 32
 
     def __init__(self):
-        self.image = load_image('Resource\\Character\\Scientists1.png')
+        self.image = load_image('Resource\\Character\\Scientists2.png')
         self.x, self.y = 48, 48
         self.frame = 0
         self.dir = 0
@@ -163,3 +163,9 @@ class Terra:
 
     def drink_potion(self):
         self.drink_sound.play()
+
+    def color_change(self, color):
+        if self.color == 0 or self.color >= 5:
+            self.color = color
+        else:
+            self.color = self.color + color + 2
