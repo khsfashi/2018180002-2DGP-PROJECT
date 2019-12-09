@@ -202,6 +202,8 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_r:
+            game_framework.change_state(reset_state)
         else:
             terra.handle_event(event)
 
@@ -214,6 +216,7 @@ def update():
         for j in range(MAX_TILE_WIDTH):
             if item[i][j].isDraw:
                 if collide(terra, item[i][j]):
+                    terra.drink_potion()
                     item[i][j].isDraw = False
                     if item[i][j].kind == 1:
                         potion_cnt -= 1
@@ -249,9 +252,13 @@ def update():
     else:
         cnt = 0
 
-    if potion_cnt == 0 and terra.x >= 800:
-        print("스테이지 클리어! 다음 스테이지로!")
-        game_framework.quit()
+    if terra.x >= 800:
+        if potion_cnt == 0:
+            print("스테이지 클리어! 다음 스테이지로!")
+            game_framework.quit()
+        else:
+            game_framework.change_state(reset_state)
+
 
 def draw():
     clear_canvas()

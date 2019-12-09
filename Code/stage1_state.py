@@ -253,11 +253,16 @@ def update():
     else:
         cnt = 0
 
-    if potion_cnt == 0 and terra.x >= 800:
-        print("스테이지 클리어! 다음 스테이지로!")
-        for i in range(len(terra.event_que)):
-            del(terra.event_que[i])
-        game_framework.change_state(stage2_state)
+    if terra.x >= 800:
+        if potion_cnt == 0:
+            print("스테이지 클리어! 다음 스테이지로!")
+            for i in range(len(terra.event_que)):
+                del (terra.event_que[i])
+            game_framework.change_state(stage2_state)
+        else:
+            game_framework.change_state(reset_state)
+
+
 
 def draw():
     clear_canvas()

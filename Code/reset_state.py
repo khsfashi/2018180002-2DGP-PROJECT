@@ -1,5 +1,6 @@
 import game_framework
 import stage1_state
+import state2_state
 
 
 name = "ResetState"

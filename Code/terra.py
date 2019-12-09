@@ -124,6 +124,10 @@ class Terra:
         self.enter = False
         self.drink_sound = load_wav('Resource\\Sounds\\drink_Potion.wav')
         self.drink_sound.set_volume(100)
+        self.super_jump_sound = load_wav('Resource\\Sounds\\JUMP1.wav')
+        self.super_jump_sound.set_volume(100)
+        self.jump_sound = load_wav('Resource\\Sounds\\JUMP2.wav')
+        self.jump_sound.set_volume(100)
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -144,6 +148,7 @@ class Terra:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
         if event.type == SDL_KEYDOWN and event.key == SDLK_SPACE and not self.jumping:
+            self.jump_sound.play()
             self.jumping = True
             self.acceleration = 3
 
@@ -151,6 +156,8 @@ class Terra:
         return self.x - 10, self.y - 16, self.x + 10, self.y + 16
 
     def super_jump(self):
+        if self.jumping:
+            self.super_jump_sound.play()
         self.acceleration = 5
         self.jumping = True
 
