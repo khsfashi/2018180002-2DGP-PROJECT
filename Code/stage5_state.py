@@ -6,6 +6,7 @@ from item import Item
 from object import Object
 import tile
 import reset_state
+import title_state
 
 # 상수 모음
 MAX_TILE_WIDTH = 25
@@ -215,7 +216,7 @@ def update():
     if terra.x >= 800:
         if potion_cnt == 0:
             print("스테이지 클리어! 다음 스테이지로!")
-            game_framework.quit()
+            game_framework.change_state(title_state)
         else:
             game_framework.reset(5)
 
