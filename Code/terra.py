@@ -50,7 +50,7 @@ class IdleState:
         if terra.jumping:
             terra.y += terra.acceleration
             if terra.acceleration >= -10:
-                terra.acceleration -= RUN_SPEED_PPS / 35 * game_framework.frame_time
+                terra.acceleration -= RUN_SPEED_PPS / 17 * game_framework.frame_time
 
     @staticmethod
     def draw(terra):
@@ -85,7 +85,7 @@ class RunState:
         if terra.jumping:
             terra.y += terra.acceleration
             if terra.acceleration >= -10:
-                terra.acceleration -= RUN_SPEED_PPS / 35 * game_framework.frame_time
+                terra.acceleration -= RUN_SPEED_PPS / 17 * game_framework.frame_time
 
     @staticmethod
     def draw(terra):
